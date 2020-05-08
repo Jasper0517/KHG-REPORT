@@ -1,0 +1,37 @@
+{
+  "name": "khg-report",
+  "version": "1.0.0",
+  "description": "khg report",
+  "main": "index.mjs",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "cheerio": "^1.0.0-rc.3",
+    "connect-mongo": "^3.2.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "module-alias": "^2.2.2",
+    "mongodb": "^3.5.7",
+    "node-telegram-bot-api": "^0.40.0",
+    "qs": "^6.9.3"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
+  },
+  "scripts": {
+    "start": "node --experimental-modules ./src/app.mjs",
+    "dev": "nodemon --experimental-modules ./src/app.mjs"
+  },
+  "_moduleAliases": {
+    "@": "./src"
+  },
+  "author": "Jasper",
+  "license": "ISC"
+}
