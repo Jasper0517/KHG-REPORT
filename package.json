@@ -21,8 +21,8 @@
     "qs": "^6.9.3"
   },
   "scripts": {
-    "start": "node --experimental-modules ./src/app.mjs",
-    "dev": "nodemon --experimental-modules ./src/app.mjs"
+    "start": "node --experimental-modules --trace-deprecation ./src/app.mjs",
+    "dev": "nodemon --experimental-modules --trace-deprecation ./src/app.mjs"
   },
   "_moduleAliases": {
     "@": "./src"

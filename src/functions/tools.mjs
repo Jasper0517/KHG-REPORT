@@ -149,11 +149,15 @@ export const hashPassword = passowrd => bcrypt.hashSync(passowrd, 10)
 
 // 加密密碼(可解密)
 export const encryptPassword = password => {
-  return crypto.AES.encrypt(password, 'KHG-REPORT-JASPER').toString()
+  const secret = process.env.PASSWORD_KEY
+  const encPassword = crypto.AES.encrypt(password, secret).toString()
+  return crypto.enc.Base64.stringify(crypto.enc.Utf8.parse(encPassword));
 }
 
 // 解密密碼
 export const decryptPassword = password => {
-  const bytes = crypto.AES.decrypt(password, 'KHG-REPORT-JASPER')
+  const secret = process.env.PASSWORD_KEY
+  let decData = crypto.enc.Base64.parse(password).toString(crypto.enc.Utf8);
+  const bytes = crypto.AES.decrypt(decData, secret)
   return bytes.toString(crypto.enc.Utf8)
 }
