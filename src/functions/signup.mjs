@@ -27,21 +27,33 @@ export default async ({
     })
   }
 
+  const isExist = await checkEmailIsExist(email)
+
   // email重複
-  if (await checkEmailIsExist(email)) {
+  if (isExist[0]) {
     return responseFormat({
       code: 400,
       msg: 'email已註冊'
     })
   }
   // 寫入 MongoDb
-  const worker = (async (data) => {
+  const worker = (async ({ email, password }) => {
+    const userData = {
+      email,
+      password,
+      chatId: null,
+      url: '',
+      KHGPassword: '',
+      EDAPKey: '',
+      role: 'user'
+    }
     const db = client.db()
     const collection = db.collection('user')
     try {
-      const result = await collection.insertOne(data)
+      const result = await collection.insertOne(userData)
       return result
     } catch (error) {
+      console.log('signup')
       console.log('error: ', error)
     }
   })({
@@ -57,6 +69,7 @@ export default async ({
       msg: `${email}, 註冊完成`
     })
   } catch (error) {
+    console.log('signup')
     console.log('error: ', error)
     return responseFormat({
       code: 500,

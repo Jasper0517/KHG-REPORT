@@ -1,4 +1,4 @@
-import defaultRequest from '@/utils/http/request'
+import defaultRequest from './request.mjs'
 
 export default req => {
   return defaultRequest.request({

@@ -9,6 +9,8 @@ import { client } from './db.mjs'
 
 import router from './router/index.mjs'
 
+import schedule from './schedule.mjs'
+
 // telegram bot
 import './bot/index.mjs'
 
@@ -35,43 +37,6 @@ router(app)
 // Listen for any kind of message. There are different kinds of
 // messages.
 
-// const login = async () => {
-//   const loginData = qs.stringify({ password: 'Admin', button: 'Login' })
-//   await axios(
-//     {
-//       url: 'http://220.134.66.121:8090/Login',
-//       method: 'POST',
-//       data: loginData
-//     }
-//   )
-// }
-// const EDAC = async () => {
-//   const EDACData = qs.stringify({ EAPK: 'EAPK' })
-//   const { data } = await axios(
-//     {
-//       url: 'http://220.134.66.121:8090/EDAC',
-//       method: 'POST',
-//       data: EDACData
-//     }
-//   )
-//   const $ = cheerio.load(data)
-//   const tbody = $('body')
-//   return EDACPaser(tbody.text())
-// }
-
-// const EDACPaser = EDAC => {
-//   if (!EDAC) return
-//   const data = EDAC.replace(/</g, '').replace(/>/g, ',').replace(/\n/g, '').split(',')
-//   const formatedEDAC = {}
-//   formatedEDAC.rountineTime = +data[1].trim()
-//   formatedEDAC.resetTime = +data[14].trim()
-//   formatedEDAC.port = +data[12].trim()
-//   formatedEDAC.lastKH = +data[5].trim()
-//   formatedEDAC.lastTestingTime = data[15].trim()
-//   formatedEDAC.nextTime = +data[14].trim()
-//   return formatedEDAC
-// }
-
 // const getApi = async () => {
 //   await login()
 //   await new Promise(resolve => setTimeout(() => {
@@ -89,6 +54,7 @@ app.listen(3000, async () => {
   client.connect()
     .then(() => {
       console.log('db connect')
+      schedule()
     })
     .catch(error => {
       console.error(error)
