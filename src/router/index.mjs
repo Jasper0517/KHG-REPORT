@@ -22,4 +22,12 @@ export default app => {
     const resData = await setting(body)
     res.send(resData)
   })
+
+  app.get('/logout', async (req, res) => {
+    req.session.cookie = {}
+    req.session.email = ''
+    req.session.password = ''
+    console.log('req.session: ', req.session)
+    res.send({ code: 0, message: '' })
+  })
 }

@@ -2,6 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import session from 'express-session'
 import connectMongo from 'connect-mongo'
+import ms from 'ms'
 
 import cors from './utils/http/cors.mjs'
 
@@ -27,7 +28,7 @@ const sessionOption = {
   store: new MongoStore({ url: 'mongodb://localhost:27017/session' }),
   resave: true,
   saveUninitialized: true,
-  cookie: { maxAge: 60 * 1000 }
+  cookie: { maxAge: ms('30d') }
 }
 
 app.use(session(sessionOption))

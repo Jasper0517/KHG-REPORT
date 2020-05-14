@@ -1,8 +1,7 @@
 import {
   responseFormat,
   checkEmailIsExist,
-  comparePassword,
-  hashPassword
+  comparePassword
 } from './tools.mjs'
 
 import {
@@ -13,7 +12,11 @@ export default async ({
   email,
   password
 }, session) => {
+  console.log('session: ', session)
   // 基本防呆
+  if (session.email) email = session.email
+  if (session.password) password = session.password
+
   if (!email || !password) {
     return responseFormat({
       code: 400,
@@ -37,9 +40,16 @@ export default async ({
   }
 
   session.email = email
-  session.password = hashPassword(password)
+  session.password = password
   sendMessage(isExist[1].chatId, '登入成功')
-  const { EDAPKey, KHGPassword, url } = isExist[1]
+  const {
+    EDAPKey,
+    KHGPassword,
+    url,
+    role,
+    notification,
+    isSetting
+  } = isExist[1]
   return responseFormat({
     code: 0,
     msg: '',
@@ -47,7 +57,10 @@ export default async ({
       email,
       EDAPKey,
       KHGPassword,
-      url
+      url,
+      role,
+      notification,
+      isSetting
     }
   })
 }

@@ -81,7 +81,6 @@ export const updateUserInfo = async ({
   lastTestingTime,
   email
 }) => {
-
   if (!lastKH || !lastTestingTime || !email) {
     return
   }
@@ -133,6 +132,7 @@ export const comparePassword = async (email, password) => {
     const isExist = await cursor.hasNext()
     if (isExist) {
       const user = await cursor.next()
+      console.log(bcrypt.compareSync(password, user.password))
       return bcrypt.compareSync(password, user.password)
     } else {
       return false
@@ -151,13 +151,13 @@ export const hashPassword = passowrd => bcrypt.hashSync(passowrd, 10)
 export const encryptPassword = password => {
   const secret = process.env.PASSWORD_KEY
   const encPassword = crypto.AES.encrypt(password, secret).toString()
-  return crypto.enc.Base64.stringify(crypto.enc.Utf8.parse(encPassword));
+  return crypto.enc.Base64.stringify(crypto.enc.Utf8.parse(encPassword))
 }
 
 // 解密密碼
 export const decryptPassword = password => {
   const secret = process.env.PASSWORD_KEY
-  let decData = crypto.enc.Base64.parse(password).toString(crypto.enc.Utf8);
+  const decData = crypto.enc.Base64.parse(password).toString(crypto.enc.Utf8)
   const bytes = crypto.AES.decrypt(decData, secret)
   return bytes.toString(crypto.enc.Utf8)
 }

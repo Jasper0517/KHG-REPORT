@@ -1,7 +1,7 @@
 const cors = async (req, res, next) => {
   const ctx = res
   // only for test,Don't use on prod.
-  ctx.set('Access-Control-Allow-Origin', req.headers.host)
+  ctx.set('Access-Control-Allow-Origin', req.headers.origin)
   ctx.set(
     'Access-Control-Allow-Headers',
     'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild'

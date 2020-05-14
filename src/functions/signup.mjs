@@ -46,7 +46,8 @@ export default async ({
       KHGPassword: '',
       EDAPKey: '',
       role: 'user',
-      notification: false
+      notification: false,
+      isSetting: false
     }
     const db = client.db()
     const collection = db.collection('user')

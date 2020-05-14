@@ -12,7 +12,6 @@ export default async ({
   EDAPKey,
   email
 }) => {
-
   if (!url || !KHGPassword || !EDAPKey) {
     return responseFormat({
       code: 400,
@@ -40,7 +39,8 @@ export default async ({
         $set: {
           url,
           KHGPassword: encryptKHGPassword,
-          EDAPKey
+          EDAPKey,
+          isSetting: true
         }
       },
       { w: 1 },
