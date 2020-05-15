@@ -12,7 +12,6 @@ export default async ({
   email,
   password
 }, session) => {
-  console.log('session: ', session)
   // 基本防呆
   if (session.email) email = session.email
   if (session.password) password = session.password

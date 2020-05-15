@@ -10,7 +10,8 @@ export default async ({
   url,
   KHGPassword,
   EDAPKey,
-  email
+  email,
+  notification
 }) => {
   if (!url || !KHGPassword || !EDAPKey) {
     return responseFormat({
@@ -40,6 +41,7 @@ export default async ({
           url,
           KHGPassword: encryptKHGPassword,
           EDAPKey,
+          notification,
           isSetting: true
         }
       },

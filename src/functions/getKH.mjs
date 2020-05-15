@@ -1,17 +1,21 @@
-import { getUserInfo, decryptPassword, updateUserInfo } from './tools.mjs'
-import { login, EDAC } from './connectKHG.mjs'
+import { getUserInfo, updateUserInfo } from './tools.mjs'
+import { EDAC } from './connectKHG.mjs'
 import { sendMessage } from '../bot/index.mjs'
 
 import moment from 'moment'
 
 export default async email => {
-  let user = await getUserInfo(email)
+  const user = await getUserInfo(email)
   if (user.chatId) {
     if (!user.url || !user.KHGPassword || !user.EDAPKey) return
     // login khg
-    await login({ url: user.url, password: decryptPassword(user.KHGPassword) })
-    // wait for 2 seconds
-    await new Promise(reslove => setTimeout(() => reslove(), 2000))
+    // await KHGLogin({ url: user.url, password: decryptPassword(user.KHGPassword) })
+    // // wait for 2 seconds
+    // await new Promise(
+    //   resolve => setTimeout(() => {
+    //     resolve()
+    //   }, 2000)
+    // )
     // get system infomation
     const EDACData = await EDAC({ EAPK: user.EDAPKey, url: user.url })
     // system last testing time

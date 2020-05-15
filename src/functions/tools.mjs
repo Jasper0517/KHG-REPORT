@@ -132,7 +132,6 @@ export const comparePassword = async (email, password) => {
     const isExist = await cursor.hasNext()
     if (isExist) {
       const user = await cursor.next()
-      console.log(bcrypt.compareSync(password, user.password))
       return bcrypt.compareSync(password, user.password)
     } else {
       return false
@@ -160,4 +159,8 @@ export const decryptPassword = password => {
   const decData = crypto.enc.Base64.parse(password).toString(crypto.enc.Utf8)
   const bytes = crypto.AES.decrypt(decData, secret)
   return bytes.toString(crypto.enc.Utf8)
+}
+
+export default {
+  responseFormat
 }

@@ -1,8 +1,21 @@
 import {
   signup,
   login,
-  setting
+  setting,
+  connectKHG,
+  tools
 } from '../functions/index.mjs'
+
+const {
+  KHGLogin,
+  EDAC,
+  getKHRecord,
+  normalApiControl
+} = connectKHG
+
+const {
+  responseFormat
+} = tools
 
 export default app => {
   app.post('/signup', async (req, res) => {
@@ -27,7 +40,45 @@ export default app => {
     req.session.cookie = {}
     req.session.email = ''
     req.session.password = ''
-    console.log('req.session: ', req.session)
     res.send({ code: 0, message: '' })
+  })
+
+  app.post('/KHGLogin', async (req, res) => {
+    const body = req.body
+    try {
+      await KHGLogin(body)
+      res.send(responseFormat({
+        code: 0,
+        msg: ''
+      }))
+    } catch (error) {
+      res.send(error)
+    }
+  })
+
+  app.post('/EDAC', async (req, res) => {
+    const body = req.body
+    const resData = await EDAC(body)
+    res.send(responseFormat({
+      code: 0,
+      msg: '',
+      data: resData
+    }))
+  })
+
+  app.post('/getKHRecord', async (req, res) => {
+    const body = req.body
+    const resData = await getKHRecord(body)
+    res.send(responseFormat({
+      code: 0,
+      msg: '',
+      data: resData
+    }))
+  })
+
+  app.post('/normalApiControl', async (req, res) => {
+    const body = req.body
+    const resData = await normalApiControl(body)
+    res.send(resData)
   })
 }
