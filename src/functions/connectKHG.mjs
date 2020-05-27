@@ -72,7 +72,7 @@ export const getKHRecord = async ({
 
 const logParser = record => {
   // 上個月第一天
-  const starts = moment().startOf('month').subtract('month', 1)
+  const starts = moment().startOf('month').subtract(1, 'month')
   // 這個月+上個月總天數
   const totalDays = moment(moment().month() - 1).daysInMonth() + moment().daysInMonth()
   // filter以上條件外的資料
@@ -80,7 +80,7 @@ const logParser = record => {
   const filterOriginLog = []
   for (let i = 0; i < copyOriginLog.length; i++) {
     // 每筆log date
-    const date = moment(moment().format('YYYY/') + copyOriginLog[i].item.replace(/\r\n|\n/g, '').substring(1, 6))
+    const date = moment(`${new Date().getFullYear()}/${copyOriginLog[i].item.replace(/\r\n|\n/g, '').substring(1, 6)}`, moment.ISO_8601)
     // 相差上個月幾天
     const diffDate = date.diff(starts, 'days')
     // 如果找完上個月份的就終止
@@ -122,7 +122,7 @@ export const normalApiControl = async ({ actName, url }) => {
       data
     })
     return responseFormat({
-      code: 0,
+      code: 200,
       msg: ''
     })
   } catch (error) {

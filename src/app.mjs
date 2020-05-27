@@ -25,31 +25,16 @@ app.use(jsonParser)
 const MongoStore = connectMongo(session)
 const sessionOption = {
   secret: 'khg-report-tw-jasper',
-  store: new MongoStore({ url: 'mongodb://localhost:27017/session' }),
+  store: new MongoStore({ url: 'mongodb://172.17.0.3:27017/session' }),
   resave: true,
   saveUninitialized: true,
   cookie: { maxAge: ms('30d') }
 }
 
 app.use(session(sessionOption))
-
 router(app)
 
-// Listen for any kind of message. There are different kinds of
-// messages.
-
-// const getApi = async () => {
-//   await login()
-//   await new Promise(resolve => setTimeout(() => {
-//     resolve()
-//   }, 4000))
-//   return await EDAC()
-// }
-
 app.listen(3000, async () => {
-  // setInterval(async () => {
-
-  // }, 60 * 1000);
   console.log('Server is listening at http://localhost:3000')
 
   client.connect()
@@ -60,13 +45,4 @@ app.listen(3000, async () => {
     .catch(error => {
       console.error(error)
     })
-
-  // let KH;
-  // try {
-  //   KH = await getApi();
-  // } catch (error) {
-  //   console.log('error: ', error);
-  // }
-  // console.log(`KH: ${KH.lastKH}, 最後測量時間: ${KH.lastTestingTime}`);
-  // bot.sendMessage(522955751, `KH: ${KH.lastKH}, 最後測量時間: ${KH.lastTestingTime}`);
 })

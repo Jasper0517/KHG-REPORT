@@ -21,18 +21,22 @@ export default app => {
   app.post('/signup', async (req, res) => {
     const body = req.body
     const resData = await signup(body)
+    res.statusCode = resData.code
     res.send(resData)
   })
 
   app.post('/login', async (req, res) => {
     const body = req.body
+    // const { language } = req.headers
     const resData = await login(body, req.session)
+    res.statusCode = resData.code
     res.send(resData)
   })
 
   app.patch('/setting', async (req, res) => {
     const body = req.body
     const resData = await setting(body)
+    res.statusCode = resData.code
     res.send(resData)
   })
 
@@ -40,7 +44,7 @@ export default app => {
     req.session.cookie = {}
     req.session.email = ''
     req.session.password = ''
-    res.send({ code: 0, message: '' })
+    res.send({ code: 200, message: '' })
   })
 
   app.post('/KHGLogin', async (req, res) => {
@@ -48,37 +52,53 @@ export default app => {
     try {
       await KHGLogin(body)
       res.send(responseFormat({
-        code: 0,
+        code: 200,
         msg: ''
       }))
     } catch (error) {
+      res.statusCode = 400
       res.send(error)
     }
   })
 
   app.post('/EDAC', async (req, res) => {
     const body = req.body
-    const resData = await EDAC(body)
-    res.send(responseFormat({
-      code: 0,
-      msg: '',
-      data: resData
-    }))
+    try {
+      const resData = await EDAC(body)
+      res.send(responseFormat({
+        code: 200,
+        msg: '',
+        data: resData
+      }))
+    } catch (error) {
+      res.statusCode = 400
+      res.send()
+    }
   })
 
   app.post('/getKHRecord', async (req, res) => {
     const body = req.body
-    const resData = await getKHRecord(body)
-    res.send(responseFormat({
-      code: 0,
-      msg: '',
-      data: resData
-    }))
+    try {
+      const resData = await getKHRecord(body)
+      res.send(responseFormat({
+        code: 200,
+        msg: '',
+        data: resData
+      }))
+    } catch (error) {
+      res.statusCode = 400
+      res.send()
+    }
   })
 
   app.post('/normalApiControl', async (req, res) => {
     const body = req.body
-    const resData = await normalApiControl(body)
-    res.send(resData)
+    try {
+      const resData = await normalApiControl(body)
+      res.send(resData)
+    } catch (error) {
+      res.statusCode = 400
+      res.send()
+    }
   })
 }

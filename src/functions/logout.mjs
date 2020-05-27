@@ -3,7 +3,7 @@ export default session => {
   session = {}
 
   return {
-    code: 0,
+    code: 200,
     msg: ''
   }
 }

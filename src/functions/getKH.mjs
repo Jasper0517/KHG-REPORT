@@ -4,29 +4,20 @@ import { sendMessage } from '../bot/index.mjs'
 
 import moment from 'moment'
 
-export default async email => {
-  const user = await getUserInfo(email)
+export default async user => {
   if (user.chatId) {
     if (!user.url || !user.KHGPassword || !user.EDAPKey) return
-    // login khg
-    // await KHGLogin({ url: user.url, password: decryptPassword(user.KHGPassword) })
-    // // wait for 2 seconds
-    // await new Promise(
-    //   resolve => setTimeout(() => {
-    //     resolve()
-    //   }, 2000)
-    // )
     // get system infomation
     const EDACData = await EDAC({ EAPK: user.EDAPKey, url: user.url })
     // system last testing time
     const lastTestingTime = moment(new Date(`${new Date().getFullYear()}/${EDACData.lastTestingTime}`))
     // report last testing time
-    const userRecordLastTestingTime = new Date(`${new Date().getFullYear()}/${user.lastTestingTime}`)
+    const userRecordLastTestingTime = user.lastTestingTime === null ? null : new Date(`${new Date().getFullYear()}/${user.lastTestingTime}`)
     // check last time testing is after
-    const isAfter = moment(lastTestingTime).isAfter(userRecordLastTestingTime)
-    if (isAfter) {
+    const isAfter = userRecordLastTestingTime === null ? true : moment(lastTestingTime).isAfter(userRecordLastTestingTime)
+    if (isAfter && user.notification) {
       // update user info
-      updateUserInfo({ email, lastKH: EDACData.lastKH, lastTestingTime: EDACData.lastTestingTime })
+      updateUserInfo({ email: user.email, lastKH: EDACData.lastKH, lastTestingTime: EDACData.lastTestingTime })
       // send message to telegram
       sendMessage(user.chatId, `lastKH: ${EDACData.lastKH}, lastTime: ${EDACData.lastTestingTime}`)
     }

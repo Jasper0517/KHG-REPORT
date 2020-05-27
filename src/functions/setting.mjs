@@ -50,7 +50,7 @@ export default async ({
         if (err) throw err
       })
     return responseFormat({
-      code: 0,
+      code: 200,
       msg: '更新成功'
     })
   } catch (error) {

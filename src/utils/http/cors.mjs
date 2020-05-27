@@ -4,7 +4,7 @@ const cors = async (req, res, next) => {
   ctx.set('Access-Control-Allow-Origin', req.headers.origin)
   ctx.set(
     'Access-Control-Allow-Headers',
-    'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild'
+    'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , language'
   )
   ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS, PATCH')
   ctx.set('Content-Type', 'application/json; charset=utf-8')

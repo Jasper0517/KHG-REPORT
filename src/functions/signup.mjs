@@ -47,7 +47,8 @@ export default async ({
       EDAPKey: '',
       role: 'user',
       notification: false,
-      isSetting: false
+      isSetting: false,
+      lastTestingTime: null
     }
     const db = client.db()
     const collection = db.collection('user')
@@ -67,7 +68,7 @@ export default async ({
   try {
     await worker
     return responseFormat({
-      code: 0,
+      code: 200,
       msg: `${email}, 註冊完成`
     })
   } catch (error) {

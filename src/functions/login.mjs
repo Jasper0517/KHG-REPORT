@@ -4,18 +4,13 @@ import {
   comparePassword
 } from './tools.mjs'
 
-import {
-  sendMessage
-} from '../bot/index.mjs'
-
 export default async ({
   email,
   password
 }, session) => {
   // 基本防呆
-  if (session.email) email = session.email
-  if (session.password) password = session.password
-
+  if (session.email && !email) email = session.email
+  if (session.password && !password) password = session.password
   if (!email || !password) {
     return responseFormat({
       code: 400,
@@ -40,7 +35,9 @@ export default async ({
 
   session.email = email
   session.password = password
-  sendMessage(isExist[1].chatId, '登入成功')
+  // if (user.notification) {
+  //   sendMessage(user.chatId, '登入成功')
+  // }
   const {
     EDAPKey,
     KHGPassword,
@@ -50,7 +47,7 @@ export default async ({
     isSetting
   } = isExist[1]
   return responseFormat({
-    code: 0,
+    code: 200,
     msg: '',
     data: {
       email,
