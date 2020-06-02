@@ -1,4 +1,4 @@
-import { getUserInfo, updateUserInfo } from './tools.mjs'
+import { updateUserInfo } from './tools.mjs'
 import { EDAC } from './connectKHG.mjs'
 import { sendMessage } from '../bot/index.mjs'
 

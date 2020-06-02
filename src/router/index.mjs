@@ -6,6 +6,9 @@ import {
   tools
 } from '../functions/index.mjs'
 
+import fs from 'fs'
+import path from 'path'
+
 const {
   KHGLogin,
   EDAC,
@@ -18,6 +21,15 @@ const {
 } = tools
 
 export default app => {
+  app.get('/hello', (req, res) => {
+    // const __dirname = path.resolve()
+    // const html = fs.readFileSync(`${__dirname}/view/public/index.html`)
+    // res.sendFile(html)
+    res.send('hello khg-report')
+    //結束寫的操作
+    // res.end()
+  })
+
   app.post('/signup', async (req, res) => {
     const body = req.body
     const resData = await signup(body)

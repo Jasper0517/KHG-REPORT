@@ -4,7 +4,7 @@ dotenv.config()
 
 const MongoClient = Mongo.MongoClient
 
-const url = process.env.DB_URL
+const url = `mongodb://${process.env.DB_URL}/aquarium`
 export const client = new MongoClient(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true
