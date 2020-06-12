@@ -1,4 +1,4 @@
-import dotenv from 'dotenv'
+import dotenv from 'dotenv-flow'
 
 import { connectMail } from '../functions/index.mjs'
 
@@ -32,5 +32,5 @@ bot.onText(/\/connect (.+)/, async (msg, match) => {
 
 // 傳送訊息
 export const sendMessage = (chatId, resp) => {
-  bot.sendMessage(chatId, resp)
+  bot.sendMessage(chatId, resp, { parse_mode: 'HTML' })
 }

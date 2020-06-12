@@ -4,7 +4,7 @@ import { sendMessage } from '../bot/index.mjs'
 
 import moment from 'moment'
 
-export default async user => {
+export default async (user, i18n) => {
   if (user.chatId) {
     if (!user.url || !user.KHGPassword || !user.EDAPKey) return
     // get system infomation
@@ -18,8 +18,17 @@ export default async user => {
     if (isAfter && user.notification) {
       // update user info
       updateUserInfo({ email: user.email, lastKH: EDACData.lastKH, lastTestingTime: EDACData.lastTestingTime })
+      i18n.setLocale(user.language || 'zh-tw')
+      const text =
+      `
+        ${i18n.__('schedule.message.testingKH', EDACData.lastKH)}
+        \n${i18n.__('schedule.message.testingTime', EDACData.lastTestingTime)}
+      `
+      //   `Last Testing dKH: <b>${EDACData.lastKH}</b>
+      //   \nLast Testing Time: <b>${EDACData.lastTestingTime}</b>
+      // `
       // send message to telegram
-      sendMessage(user.chatId, `lastKH: ${EDACData.lastKH}, lastTime: ${EDACData.lastTestingTime}`)
+      sendMessage(user.chatId, text)
     }
   }
 }

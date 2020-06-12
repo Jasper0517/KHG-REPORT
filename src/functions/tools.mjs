@@ -77,14 +77,10 @@ export const getAllUserInfo = async () => {
 // 更新使用者資料
 
 export const updateUserInfo = async ({
-  lastKH,
-  lastTestingTime,
-  email
+  email,
+  ...others
 }) => {
-  if (!lastKH || !lastTestingTime || !email) {
-    return
-  }
-
+  if (!email) return
   // 檢查email是否存在
   const isExist = await checkEmailIsExist(email)
   if (!isExist[0]) {
@@ -99,8 +95,7 @@ export const updateUserInfo = async ({
       { email },
       {
         $set: {
-          lastKH,
-          lastTestingTime
+          ...others
         }
       },
       { w: 1 },

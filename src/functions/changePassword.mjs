@@ -1,51 +1,53 @@
 import {
-  encryptPassword,
   responseFormat,
-  checkEmailIsExist
+  comparePassword
 } from './tools.mjs'
 
 import { client } from '../db.mjs'
 
 export default async ({
-  url,
-  KHGPassword,
-  EDAPKey,
   email,
-  notification,
-  language
+  password,
+  newPassword,
+  confirmNewPassword
 }, $t) => {
-  if (!url || !KHGPassword || !EDAPKey) {
+  if (!email) {
     return responseFormat({
       code: 400,
-      msg: $t('setting.warning.0')
+      msg: $t('changePassword.warning.0')
     })
   }
 
-  // 檢查email是否存在
-  const isExist = await checkEmailIsExist(email)
-  if (!isExist[0]) {
+  if (!await comparePassword(email, password)) {
     return responseFormat({
       code: 400,
-      msg: $t('setting.warning.1')
+      msg: $t('changePassword.warning.1')
     })
   }
 
-  const encryptKHGPassword = encryptPassword(KHGPassword)
+  if (newPassword !== confirmNewPassword) {
+    return responseFormat({
+      code: 400,
+      msg: $t('changePassword.warning.2')
+    })
+  }
+
+  if (password === newPassword) {
+    return responseFormat({
+      code: 400,
+      msg: $t('changePassword.warning.3')
+    })
+  }
+
   // 寫入 MongoDb
   const db = client.db()
   const collection = db.collection('user')
-  const newUrl = url.lastIndexOf('/') === url.length - 1 ? url.substr(0, url.length - 1) : url
   try {
     await collection.updateOne(
       { email },
       {
         $set: {
-          url: newUrl,
-          KHGPassword: encryptKHGPassword,
-          EDAPKey,
-          notification,
-          isSetting: true,
-          language
+          password: newPassword
         }
       },
       { w: 1 },
@@ -54,10 +56,10 @@ export default async ({
       })
     return responseFormat({
       code: 200,
-      msg: $t('systemSuccess')
+      msg: ''
     })
   } catch (error) {
-    console.log('setting')
+    console.log('changePassword')
     console.log('error: ', error)
     return responseFormat({
       code: 400,

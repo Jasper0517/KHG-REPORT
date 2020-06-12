@@ -10,12 +10,13 @@ export default async ({
   email,
   password,
   confirmPassword
-}) => {
+}, req) => {
+  const $t = req.__
   // 基本防呆
   if (!email || !password || !confirmPassword) {
     return responseFormat({
       code: 400,
-      msg: '欄位不可以為空'
+      msg: $t('signup.warning.0')
     })
   }
 
@@ -23,7 +24,7 @@ export default async ({
   if (password !== confirmPassword) {
     return responseFormat({
       code: 400,
-      msg: '密碼不一致'
+      msg: $t('signup.warning.1')
     })
   }
 
@@ -33,7 +34,7 @@ export default async ({
   if (isExist[0]) {
     return responseFormat({
       code: 400,
-      msg: 'email已註冊'
+      msg: $t('signup.warning.2')
     })
   }
   // 寫入 MongoDb
@@ -48,7 +49,8 @@ export default async ({
       role: 'user',
       notification: false,
       isSetting: false,
-      lastTestingTime: null
+      lastTestingTime: null,
+      language: req.locale
     }
     const db = client.db()
     const collection = db.collection('user')
@@ -69,14 +71,14 @@ export default async ({
     await worker
     return responseFormat({
       code: 200,
-      msg: `${email}, 註冊完成`
+      msg: $t('signup.sucess', email)
     })
   } catch (error) {
     console.log('signup')
     console.log('error: ', error)
     return responseFormat({
       code: 500,
-      msg: '系統異常請稍後再試'
+      msg: $t('systemError')
     })
   }
 }

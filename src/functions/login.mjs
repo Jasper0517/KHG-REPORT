@@ -7,14 +7,15 @@ import {
 export default async ({
   email,
   password
-}, session) => {
-  // 基本防呆
+}, session, $t) => {
   if (session.email && !email) email = session.email
   if (session.password && !password) password = session.password
+
+  // 基本防呆
   if (!email || !password) {
     return responseFormat({
       code: 400,
-      msg: '欄位不可以為空'
+      msg: $t('login.warning.0')
     })
   }
   // 檢查email是否存在
@@ -22,22 +23,20 @@ export default async ({
   if (!isExist[0]) {
     return responseFormat({
       code: 400,
-      msg: 'email不存在，請註冊'
+      msg: $t('login.warning.1')
     })
   }
 
   if (!await comparePassword(email, password)) {
     return responseFormat({
       code: 400,
-      msg: '登入資料錯誤請重新輸入'
+      msg: $t('login.warning.2')
     })
   }
 
   session.email = email
   session.password = password
-  // if (user.notification) {
-  //   sendMessage(user.chatId, '登入成功')
-  // }
+
   const {
     EDAPKey,
     KHGPassword,

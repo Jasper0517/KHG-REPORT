@@ -10,24 +10,30 @@
     "cheerio": "^1.0.0-rc.3",
     "connect-history-api-fallback": "^1.6.0",
     "connect-mongo": "^3.2.0",
+    "cookie-parser": "^1.4.5",
     "crypto-js": "^4.0.0",
     "dotenv": "^8.2.0",
+    "dotenv-flow": "^3.1.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "fs": "0.0.1-security",
+    "google-recaptcha": "^1.1.0",
     "https": "^1.0.0",
+    "i18n": "^0.10.0",
     "module-alias": "^2.2.2",
     "moment": "^2.25.3",
     "mongodb": "^3.5.7",
     "ms": "^2.1.2",
     "node-schedule": "^1.3.2",
     "node-telegram-bot-api": "^0.40.0",
+    "nodemailer": "^6.4.8",
     "path": "^0.12.7",
     "qs": "^6.9.3"
   },
   "scripts": {
-    "start": "node --experimental-modules --trace-deprecation ./src/app.mjs",
-    "dev": "nodemon --experimental-modules --trace-deprecation ./src/app.mjs"
+    "start": "NODE_ENV=production node --experimental-modules --trace-deprecation ./src/app.mjs",
+    "dev": "NODE_ENV=development nodemon  --experimental-modules --trace-deprecation ./src/app.mjs",
+    "build": "docker rmi maple0517/khg-report && docker build -t maple0517/khg-report . && docker push maple0517/khg-report:latest"
   },
   "_moduleAliases": {
     "@": "./src"

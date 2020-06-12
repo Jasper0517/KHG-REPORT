@@ -1,5 +1,5 @@
 import Mongo from 'mongodb'
-import dotenv from 'dotenv'
+import dotenv from 'dotenv-flow'
 dotenv.config()
 
 const MongoClient = Mongo.MongoClient

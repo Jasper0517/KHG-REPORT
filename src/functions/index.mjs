@@ -5,6 +5,9 @@ import setting from './setting.mjs'
 import getKH from './getKH.mjs'
 import connectKHG from './connectKHG.mjs'
 import tools from './tools.mjs'
+import recaptcha from './recaptcha.mjs'
+import forgetPassword from './forgetPassword.mjs'
+import changePassword from './changePassword.mjs'
 
 export {
   signup,
@@ -13,5 +16,8 @@ export {
   setting,
   getKH,
   connectKHG,
-  tools
+  tools,
+  recaptcha,
+  forgetPassword,
+  changePassword
 }
