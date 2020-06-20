@@ -1,6 +1,7 @@
 import {
   responseFormat,
-  comparePassword
+  comparePassword,
+  hashPassword
 } from './tools.mjs'
 
 import { client } from '../db.mjs'
@@ -47,7 +48,7 @@ export default async ({
       { email },
       {
         $set: {
-          password: newPassword
+          password: hashPassword(newPassword)
         }
       },
       { w: 1 },
