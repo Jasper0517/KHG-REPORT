@@ -92,7 +92,7 @@ if (environment === 'production') {
     startServer()
   })
 } else {
-  app.listen(3000, async () => {
+  app.listen(3000, () => {
     startServer()
   })
 }

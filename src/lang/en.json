@@ -14,7 +14,7 @@
 			"1": "Invalid password",
 			"2": "Email address exists"
 		},
-		"sucess": "%s, Register successfully"
+		"success": "%s, Register successfully"
 	},
 	"setting": {
 		"warning": {
@@ -28,7 +28,7 @@
 			"testingTime": "Testing Time： <b>%s</b>"
 		}
 	},
-	"connectEamil": {
+	"connectEmail": {
 		"warning": "Invalid email address",
 		"success": "Email connect successfully",
 		"failure": "Failed to connect, please try again later"
@@ -36,7 +36,7 @@
 	"forgetPassword": {
 		"subject": "KHG-Viewer Password Reset",
 		"context": "Your New Password： %s",
-		"errorMessage": "Sending Email Erro, Please Try Again Later",
+		"errorMessage": "Sending Email Error, Please Try Again Later",
     "warning": {
 			"0": "Email is required",
 			"1": "Invalid email address"
@@ -48,11 +48,6 @@
 			"1": "Login password error",
 			"2": "Confirm password is not match",
 			"3": "New password equal with old password"
-		}
-	},
-	"chagePassword": {
-		"warning": {
-			"1": "chagePassword.warning.1"
 		}
 	}
 }

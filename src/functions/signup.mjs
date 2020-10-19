@@ -71,7 +71,7 @@ export default async ({
     await worker
     return responseFormat({
       code: 200,
-      msg: $t('signup.sucess', email)
+      msg: $t('signup.success', email)
     })
   } catch (error) {
     console.log('signup')
