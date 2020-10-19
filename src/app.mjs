@@ -14,6 +14,7 @@ import schedule from './schedule.mjs'
 import history from 'connect-history-api-fallback'
 import i18n from 'i18n'
 import cookieParser from 'cookie-parser'
+import compression from 'compression'
 
 // telegram bot
 import './bot/index.mjs'
@@ -24,6 +25,7 @@ const app = express()
 
 app.use(cors)
 app.use(history())
+app.use(compression())
 
 const jsonParser = bodyParser.json()
 app.use(jsonParser)
