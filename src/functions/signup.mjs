@@ -10,12 +10,13 @@ export default async ({
   email,
   password,
   confirmPassword
-}) => {
+}, req) => {
+  const $t = req.__
   // 基本防呆
   if (!email || !password || !confirmPassword) {
     return responseFormat({
       code: 400,
-      msg: '欄位不可以為空'
+      msg: $t('signup.warning.0')
     })
   }
 
@@ -23,25 +24,41 @@ export default async ({
   if (password !== confirmPassword) {
     return responseFormat({
       code: 400,
-      msg: '密碼不一致'
+      msg: $t('signup.warning.1')
     })
   }
 
+  const isExist = await checkEmailIsExist(email)
+
   // email重複
-  if (await checkEmailIsExist(email)) {
+  if (isExist[0]) {
     return responseFormat({
       code: 400,
-      msg: 'email已註冊'
+      msg: $t('signup.warning.2')
     })
   }
   // 寫入 MongoDb
-  const worker = (async (data) => {
+  const worker = (async ({ email, password }) => {
+    const userData = {
+      email,
+      password,
+      chatId: null,
+      url: '',
+      KHGPassword: '',
+      EDAPKey: '',
+      role: 'user',
+      notification: false,
+      isSetting: false,
+      lastTestingTime: null,
+      language: req.locale
+    }
     const db = client.db()
     const collection = db.collection('user')
     try {
-      const result = await collection.insertOne(data)
+      const result = await collection.insertOne(userData)
       return result
     } catch (error) {
+      console.log('signup')
       console.log('error: ', error)
     }
   })({
@@ -53,14 +70,15 @@ export default async ({
   try {
     await worker
     return responseFormat({
-      code: 0,
-      msg: `${email}, 註冊完成`
+      code: 200,
+      msg: $t('signup.sucess', email)
     })
   } catch (error) {
+    console.log('signup')
     console.log('error: ', error)
     return responseFormat({
       code: 500,
-      msg: '系統異常請稍後再試'
+      msg: $t('systemError')
     })
   }
 }

@@ -1,0 +1,58 @@
+{
+	"systemError": "系統異常請稍後再試",
+	"systemSuccess": "更新成功",
+	"login": {
+		"warning": {
+			"0": "欄位不可以為空",
+			"1": "email不存在，請註冊",
+			"2": "登入資料錯誤請重新輸入"
+		}
+	},
+	"signup": {
+		"warning": {
+			"0": "欄位不可以為空",
+			"1": "密碼不一致",
+			"2": "email已註冊"
+		},
+		"sucess": "%s, 註冊完成"
+	},
+	"setting": {
+		"warning": {
+			"0": "欄位不可以為空",
+			"1": "email不存在，請註冊"
+		}
+	},
+	"schedule": {
+		"message": {
+			"testingKH": "dKH: <b>%s</b>",
+			"testingTime": "測試時間： <b>%s</b>"
+		}
+	},
+	"connectEamil": {
+		"warning": "Email不存在",
+		"success": "Email連結成功",
+		"failure": "Email連接異常，請稍候重試"
+	},
+	"forgetPassword": {
+		"subject": "KHG-Viewer 密碼重置",
+		"context": "您新的密碼為： %s",
+    "errorMessage": "寄送Email失敗，請稍候再試。",
+    "warning": {
+			"0": "Email不可以為空",
+			"1": "查無此Email"
+		}
+	},
+	"changePassword": {
+		"warning": {
+			"0": "Email不可以為空",
+			"1": "登入密碼錯誤",
+			"2": "確認密碼輸入不同",
+			"3": "變更密碼不可相同"
+		}
+	},
+	"chagePassword": {
+		"warning": {
+			"1": "chagePassword.warning.1"
+		}
+	}
+}

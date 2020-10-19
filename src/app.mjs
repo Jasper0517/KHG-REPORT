@@ -2,104 +2,95 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import session from 'express-session'
 import connectMongo from 'connect-mongo'
-
+import ms from 'ms'
+import fs from 'fs'
+import https from 'https'
+import path from 'path'
+import dotenv from 'dotenv-flow'
 import cors from './utils/http/cors.mjs'
-
 import { client } from './db.mjs'
-
 import router from './router/index.mjs'
+import schedule from './schedule.mjs'
+import history from 'connect-history-api-fallback'
+import i18n from 'i18n'
+import cookieParser from 'cookie-parser'
 
 // telegram bot
 import './bot/index.mjs'
 
+dotenv.config()
+
 const app = express()
 
 app.use(cors)
+app.use(history())
 
 const jsonParser = bodyParser.json()
 app.use(jsonParser)
 
+const environment = process.env.NODE_ENV
+
 const MongoStore = connectMongo(session)
 const sessionOption = {
   secret: 'khg-report-tw-jasper',
-  store: new MongoStore({ url: 'mongodb://localhost:27017/session' }),
+  store: new MongoStore({ url: `mongodb://${process.env.DB_URL}/session` }),
   resave: true,
   saveUninitialized: true,
-  cookie: { maxAge: 60 * 1000 }
+  cookie: {
+    secure: true,
+    httpOnly: true,
+    maxAge: ms('30d')
+  }
 }
 
 app.use(session(sessionOption))
 
+const __dirname = path.resolve()
+
+i18n.configure({
+  // setup some locales - other locales default to en silently
+  locales: ['en', 'zh-tw'],
+
+  // sets a custom cookie name to parse locale settings from
+  cookie: 'language',
+  // where to store json files - defaults to './locales'
+  directory: `${__dirname}/src/lang`,
+  objectNotation: true
+})
+
+app.use(cookieParser())
+app.use(i18n.init)
+
+app.use(express.static('view/public'))
+// router
 router(app)
 
-// Listen for any kind of message. There are different kinds of
-// messages.
+// for ssl
+const privateKey = fs.readFileSync(`${__dirname}/ssl/private.key`)
+const certificate = fs.readFileSync(`${__dirname}/ssl/certificate.crt`)
+const credentials = { key: privateKey, cert: certificate }
 
-// const login = async () => {
-//   const loginData = qs.stringify({ password: 'Admin', button: 'Login' })
-//   await axios(
-//     {
-//       url: 'http://220.134.66.121:8090/Login',
-//       method: 'POST',
-//       data: loginData
-//     }
-//   )
-// }
-// const EDAC = async () => {
-//   const EDACData = qs.stringify({ EAPK: 'EAPK' })
-//   const { data } = await axios(
-//     {
-//       url: 'http://220.134.66.121:8090/EDAC',
-//       method: 'POST',
-//       data: EDACData
-//     }
-//   )
-//   const $ = cheerio.load(data)
-//   const tbody = $('body')
-//   return EDACPaser(tbody.text())
-// }
+const httpsServer = https.createServer(credentials, app)
 
-// const EDACPaser = EDAC => {
-//   if (!EDAC) return
-//   const data = EDAC.replace(/</g, '').replace(/>/g, ',').replace(/\n/g, '').split(',')
-//   const formatedEDAC = {}
-//   formatedEDAC.rountineTime = +data[1].trim()
-//   formatedEDAC.resetTime = +data[14].trim()
-//   formatedEDAC.port = +data[12].trim()
-//   formatedEDAC.lastKH = +data[5].trim()
-//   formatedEDAC.lastTestingTime = data[15].trim()
-//   formatedEDAC.nextTime = +data[14].trim()
-//   return formatedEDAC
-// }
-
-// const getApi = async () => {
-//   await login()
-//   await new Promise(resolve => setTimeout(() => {
-//     resolve()
-//   }, 4000))
-//   return await EDAC()
-// }
-
-app.listen(3000, async () => {
-  // setInterval(async () => {
-
-  // }, 60 * 1000);
+const startServer = () => {
   console.log('Server is listening at http://localhost:3000')
 
   client.connect()
     .then(() => {
       console.log('db connect')
+      schedule(i18n)
     })
     .catch(error => {
       console.error(error)
     })
+}
 
-  // let KH;
-  // try {
-  //   KH = await getApi();
-  // } catch (error) {
-  //   console.log('error: ', error);
-  // }
-  // console.log(`KH: ${KH.lastKH}, 最後測量時間: ${KH.lastTestingTime}`);
-  // bot.sendMessage(522955751, `KH: ${KH.lastKH}, 最後測量時間: ${KH.lastTestingTime}`);
-})
+if (environment === 'production') {
+  httpsServer.listen(3000, () => {
+    startServer()
+  })
+} else {
+  app.listen(3000, async () => {
+    startServer()
+  })
+}

@@ -1,0 +1,58 @@
+{
+	"systemError": "system error, please try again later",
+	"systemSuccess": "Update successfully",
+	"login": {
+		"warning": {
+			"0": "Input is necessary",
+			"1": "Invalid email address, please register one to proceed",
+			"2": "Invalid data, please try again"
+		}
+	},
+	"signup": {
+		"warning": {
+			"0": "Invalid value",
+			"1": "Invalid password",
+			"2": "Email address exists"
+		},
+		"sucess": "%s, Register successfully"
+	},
+	"setting": {
+		"warning": {
+			"0": "Invalid value",
+			"1": "Invalid email address, please register one to proceed"
+		}
+	},
+	"schedule": {
+		"message": {
+			"testingKH": "dKH: <b>%s</b>",
+			"testingTime": "Testing Time： <b>%s</b>"
+		}
+	},
+	"connectEamil": {
+		"warning": "Invalid email address",
+		"success": "Email connect successfully",
+		"failure": "Failed to connect, please try again later"
+	},
+	"forgetPassword": {
+		"subject": "KHG-Viewer Password Reset",
+		"context": "Your New Password： %s",
+		"errorMessage": "Sending Email Erro, Please Try Again Later",
+    "warning": {
+			"0": "Email is required",
+			"1": "Invalid email address"
+		}
+	},
+	"changePassword": {
+		"warning": {
+			"0": "Email is required",
+			"1": "Login password error",
+			"2": "Confirm password is not match",
+			"3": "New password equal with old password"
+		}
+	},
+	"chagePassword": {
+		"warning": {
+			"1": "chagePassword.warning.1"
+		}
+	}
+}
