@@ -29,23 +29,23 @@ export const EDAC = async ({ EAPK, url }) => {
   })
   const $ = cheerio.load(data)
   const tbody = $('body')
-  return EDACPaser(tbody.text())
+  return EDACParser(tbody.text())
 }
 
-const EDACPaser = EDAC => {
+const EDACParser = EDAC => {
   if (!EDAC) return
   const data = EDAC.replace(/</g, '')
     .replace(/>/g, ',')
     .replace(/\n/g, '')
     .split(',')
-  const formatedEDAC = {}
-  formatedEDAC.rountineTime = +data[1].trim()
-  formatedEDAC.resetTime = +data[14].trim()
-  formatedEDAC.port = +data[12].trim()
-  formatedEDAC.lastKH = +data[5].trim()
-  formatedEDAC.lastTestingTime = data[15].trim()
-  formatedEDAC.nextTime = +data[14].trim()
-  return formatedEDAC
+  const formateEDAC = {}
+  formateEDAC.rountineTime = +data[1].trim()
+  formateEDAC.resetTime = +data[14].trim()
+  formateEDAC.port = +data[12].trim()
+  formateEDAC.lastKH = +data[5].trim()
+  formateEDAC.lastTestingTime = data[15].trim()
+  formateEDAC.nextTime = +data[14].trim()
+  return formateEDAC
 }
 
 export const getKHRecord = async ({
@@ -56,14 +56,14 @@ export const getKHRecord = async ({
       url: `${url}/SD_Dump`,
       method: 'POST'
     })
-    const unformatData = []
+    const unFormateData = []
     const $ = cheerio.load(data)
     const tbody = $('tbody')
     const tableTd = tbody.eq(0).find('td')
     for (let i = 0; i < tableTd.length - 1; i++) {
-      unformatData.push(tableTd.eq(i).text())
+      unFormateData.push(tableTd.eq(i).text())
     }
-    return logParser(unformatData.map(item => { return { item } }).reverse())
+    return logParser(unFormateData.map(item => { return { item } }).reverse())
   } catch (error) {
     console.log('getKHRecord')
     console.log(error)
@@ -76,41 +76,44 @@ const logParser = record => {
   // 這個月+上個月總天數
   const totalDays = moment(moment().month() - 1).daysInMonth() + moment().daysInMonth()
   // filter以上條件外的資料
-  const copyOriginLog = JSON.parse(JSON.stringify(record))
+  const multipleOriginLog = JSON.parse(JSON.stringify(record))
   const filterOriginLog = []
-  for (let i = 0; i < copyOriginLog.length; i++) {
+  for (let i = 0; i < multipleOriginLog.length; i++) {
     // 每筆log date
-    const date = moment(`${new Date().getFullYear()}/${copyOriginLog[i].item.replace(/\r\n|\n/g, '').substring(1, 6)}`, moment.ISO_8601)
+    const date = moment(`${new Date().getFullYear()}/${multipleOriginLog[i].item.replace(/\r\n|\n/g, '').substring(1, 6)}`, moment.ISO_8601)
     // 相差上個月幾天
     const diffDate = date.diff(starts, 'days')
     // 如果找完上個月份的就終止
     if (totalDays < diffDate) break
-    filterOriginLog.push(copyOriginLog[i])
+    filterOriginLog.push(multipleOriginLog[i])
   }
+
+  // max count 800
   const originData = filterOriginLog.length > 800 ? filterOriginLog.splice(0, 800) : filterOriginLog
-  const formatedData = originData.map(({ item }) => {
-    const havePH = item.indexOf('pH:') >= 0
+
+  // formate data
+  const formateData = originData.map(({ item }) => {
+    const hasPH = item.indexOf('pH:') >= 0
     const newData = item.replace(' AK. ', ' ').replace(' AK.', ' ').split(' ')
     const obj = {}
     obj.date = newData[0].replace(/\r\n|\n/g, '').trim()
     obj.time = newData[1]
     if (newData[2].indexOf('W') === 0) {
-      obj.KH = +newData[havePH ? 9 : 6].replace(':', '')
+      obj.KH = +newData[hasPH ? 9 : 6].replace(':', '')
       obj.isKHRecord = true
       obj.distance = +newData[2].replace('W.', '')
       obj.AK = +newData[4]
       obj.error = newData[3]
     } else {
       const message = newData.splice(2).join(' ')
-      if (message.indexOf('ERR') >= 0) {
-        obj.isError = true
-      }
+      if (message.indexOf('ERR') >= 0) obj.isError = true
       obj.isKHRecord = false
       obj.message = message
     }
     return obj
   })
-  return formatedData
+
+  return formateData
 }
 
 export const normalApiControl = async ({ actName, url }) => {

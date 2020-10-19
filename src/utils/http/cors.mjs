@@ -11,17 +11,6 @@ const cors = async (req, res, next) => {
     'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , language'
   )
   ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS, PATCH')
-  // const url = res.req.url
-  // console.log('url: ', `${req.protocol}://${req.headers.host}/`)
-  // console.log(req.route)
-  // if (url.indexOf('.css') >= 0) {
-  //   ctx.set('Content-Type', 'text/css')
-  // } else if (url.indexOf('.js') >= 0) {
-  //   ctx.set('Content-Type', 'application/javascript;')
-  // } else {
-  //   ctx.set('Content-Type', 'application/json; text/html; charset=utf-8;')
-  // }
-  // req.accepts(['html', 'json', 'text'])
   ctx.set('Access-Control-Allow-Credentials', 'true')
   if (res.req.method === 'OPTIONS') {
     res.req.status = 200

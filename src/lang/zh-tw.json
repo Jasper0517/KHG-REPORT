@@ -14,7 +14,7 @@
 			"1": "密碼不一致",
 			"2": "email已註冊"
 		},
-		"sucess": "%s, 註冊完成"
+		"success": "%s, 註冊完成"
 	},
 	"setting": {
 		"warning": {
@@ -28,7 +28,7 @@
 			"testingTime": "測試時間： <b>%s</b>"
 		}
 	},
-	"connectEamil": {
+	"connectEmail": {
 		"warning": "Email不存在",
 		"success": "Email連結成功",
 		"failure": "Email連接異常，請稍候重試"
@@ -48,11 +48,6 @@
 			"1": "登入密碼錯誤",
 			"2": "確認密碼輸入不同",
 			"3": "變更密碼不可相同"
-		}
-	},
-	"chagePassword": {
-		"warning": {
-			"1": "chagePassword.warning.1"
 		}
 	}
 }

@@ -19,10 +19,10 @@ export default async (email, chatId, i18n) => {
       err => {
         if (err) throw err
       })
-    return i18n.__('connectEamil.success')
+    return i18n.__('connectEmail.success')
   } catch (error) {
     console.log('connectMail')
     console.log('error: ', error)
-    return i18n.__('connectEamil.failure')
+    return i18n.__('connectEmail.failure')
   }
 }
