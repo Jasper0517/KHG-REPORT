@@ -34,7 +34,7 @@ const environment = process.env.NODE_ENV
 
 const MongoStore = connectMongo(session)
 const sessionOption = {
-  secret: 'khg-report-tw-jasper',
+  secret: process.env.SESSION_SECRET,
   store: new MongoStore({ url: `mongodb://${process.env.DB_URL}/session` }),
   resave: true,
   saveUninitialized: true,
